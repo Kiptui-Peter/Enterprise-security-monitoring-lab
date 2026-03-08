@@ -33,4 +33,4 @@ To verify TCP/IP routing across the physical and virtual layers, successful ICMP
 Following the successful ping test, a secure remote administration session was established using SSH from the attacker machine to the target, proving the headless server can be securely managed over the network.
 
 ### 📸 Proof of Execution
-![Phase 1 Verification: Ping and SSH](verification/1.png
+![Phase 1 Verification: Ping and SSH](verification/1.png)
