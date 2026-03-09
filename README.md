@@ -34,3 +34,19 @@ Following the successful ping test, a secure remote administration session was e
 
 ### 📸 Proof of Execution
 ![Phase 1 Verification: Ping and SSH](verification/1.png)
+
+## 🔍 Phase 2: Active Reconnaissance & Network Traffic Analysis (NTA)
+
+### 1. The Attack Vector (Nmap)
+To map the target's attack surface, an active reconnaissance scan was launched from the bare-metal Red Team machine against the virtualized Blue Team target. A **TCP SYN Stealth Scan (`nmap -sS -p-`)** was executed across all 65,535 ports. This specific scan technique was utilized to identify listening services while actively tearing down the connection (`RST`) before the application layer could log a completed 3-way handshake.
+
+### 2. Packet Capture & Analysis (Wireshark)
+Simultaneous to the Nmap scan, Wireshark was deployed to monitor the physical-to-virtual network interface. Traffic was filtered strictly to the target IP (`ip.addr == 10.0.10.244`) to capture the raw packet flow of the attack.
+
+### 3. Execution Results
+The Network Traffic Analysis (NTA) mathematically validated the Attack Surface Reduction implemented in Phase 1:
+* **Closed Ports:** Wireshark captured the Debian server explicitly rejecting unauthorized port knocks with `[RST, ACK]` (Reset, Acknowledge) packets, proving unnecessary services were successfully stripped.
+* **Open Ports:** The packet capture isolated the exact microsecond the target's SSH daemon responded to the Nmap scan with a `[SYN, ACK]` packet on Port 22, accurately reflecting the controlled remote-administration entry point.
+
+### 📸 Proof of Execution
+![Phase 2 Verification: Wireshark TCP SYN Analysis](verification/2.png)
